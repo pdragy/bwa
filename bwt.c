@@ -39,8 +39,11 @@ void bwt_gen_cnt_table(bwt_t *bwt)
 	int i, j;
 	for (i = 0; i != 256; ++i) {
 		uint32_t x = 0;
-		for (j = 0; j != 4; ++j)
+		for (j = 0; j != 4; ++j) {
 			x |= (((i&3) == j) + ((i>>2&3) == j) + ((i>>4&3) == j) + (i>>6 == j)) << (j<<3);
+			
+		}
+		fprintf(stderr, "count_table[%d]=%d\n", i, x);
 		bwt->cnt_table[i] = x;
 	}
 }
