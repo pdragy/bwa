@@ -158,7 +158,7 @@ bwt_aln1_t *bwt_match_gap(bwt_t *const bwt, int len, const ubyte_t *seq, bwt_wid
 		if (hit_found) { // action for found hits
 			int score = aln_score(e.n_mm, e.n_gapo, e.n_gape, opt);
 			int do_add = 1;
-			//printf("#2 hits found: %d:(%u,%u)\n", e.n_mm+e.n_gapo, k, l);
+			fprintf(stderr, "#2 hits found: %d:(%u,%u)\n", e.n_mm+e.n_gapo, k, l);
 			if (n_aln == 0) {
 				best_score = score;
 				best_diff = e.n_mm + e.n_gapo;

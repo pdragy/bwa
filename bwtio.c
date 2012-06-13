@@ -45,6 +45,7 @@ void bwt_restore_sa(const char *fn, bwt_t *bwt)
 	bwt->sa[0] = -1;
 
 	fread(bwt->sa + 1, sizeof(bwtint_t), bwt->n_sa - 1, fp);
+	fprintf(stderr, "restoring suffix array: bwt->n_sa=%u, bwt->sa_intv=%u,\n",bwt->n_sa, bwt->sa_intv);
 	fclose(fp);
 }
 
@@ -64,6 +65,7 @@ bwt_t *bwt_restore_bwt(const char *fn)
 	fread(bwt->bwt, 4, bwt->bwt_size, fp);
 	bwt->seq_len = bwt->L2[4];
 	fclose(fp);
+	fprintf(stderr, "restoring bwt: bwt_size=%u, bwt primary=%u, bwt seq_len=%u, L2[0]=%u, L2[1]=%u, L2[2]=%u, L2[3]=%u, L2[4]=%u\n",bwt->bwt_size, bwt->primary, bwt->seq_len,bwt->L2[0],bwt->L2[1],bwt->L2[2],bwt->L2[3],bwt->L2[4]);
 	bwt_gen_cnt_table(bwt);
 
 	return bwt;

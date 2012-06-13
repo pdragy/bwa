@@ -205,6 +205,7 @@ void bwa_aln_core(const char *prefix, const char *fn_fa, const gap_opt_t *opt)
 		fprintf(stderr, "[bwa_aln_core] write to the disk... ");
 		for (i = 0; i < n_seqs; ++i) {
 			bwa_seq_t *p = seqs + i;
+			fprintf(stderr, "found %d alignments\n",p->n_aln);
 			err_fwrite(&p->n_aln, 4, 1, stdout);
 			if (p->n_aln) err_fwrite(p->aln, sizeof(bwt_aln1_t), p->n_aln, stdout);
 		}
