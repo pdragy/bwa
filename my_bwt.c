@@ -22,7 +22,7 @@ int main() {
 	return 0;
 }
 
-int my_bwt_match_exact(const bwt_t *bwt, int len, const ubyte_t *str, bwtint_t *sa_begin, bwtint_t *sa_end)
+int my_bwt_match_exact(const bwtl_t *bwt, int len, const ubyte_t *str, bwtint_t *sa_begin, bwtint_t *sa_end)
 {
 	bwtint_t k, l, ok, ol;
 	int i;
@@ -30,7 +30,7 @@ int my_bwt_match_exact(const bwt_t *bwt, int len, const ubyte_t *str, bwtint_t *
 	for (i = len - 1; i >= 0; --i) {
 		ubyte_t c = str[i];
 		if (c > 3) return 0; // no match
-		bwt_2occ(bwt, k - 1, l, c, &ok, &ol);
+		//bwt_2occ(bwt, k - 1, l, c, &ok, &ol);
 		k = bwt->L2[c] + ok + 1;
 		l = bwt->L2[c] + ol;
 		if (k > l) break; // no match
@@ -41,6 +41,7 @@ int my_bwt_match_exact(const bwt_t *bwt, int len, const ubyte_t *str, bwtint_t *
 	return l - k + 1;
 }
 
+/*
 int my_bwt_match_exact_alt(const bwt_t *bwt, int len, const ubyte_t *str, bwtint_t *k0, bwtint_t *l0)
 {
 	int i;
@@ -57,7 +58,7 @@ int my_bwt_match_exact_alt(const bwt_t *bwt, int len, const ubyte_t *str, bwtint
 	*k0 = k; *l0 = l;
 	return l - k + 1;
 }
-
+*/
 
 
 bwtl_t *my_restore_bwt(const char *fn)
@@ -89,12 +90,8 @@ bwtl_t *bwtl_seq2bwtl()
 {
 	bwtl_t *b;
 	int i;
-	//b = (bwtl_t*)calloc(1, sizeof(bwtl_t));
-	//b->seq_len = len;
-
 	//b->bwt_size = (len + 15) / 16;
 	//b->bwt = (uint32_t*)calloc(b->bwt_size, 4);
-	//b->bwt = my_restore_bwt("data/reference/test2.fa.bwt");
 	b = my_restore_bwt("data/reference/test2.fa.bwt");
 	fprintf(stderr, "restoring bwt: bwt_size=%u, bwt primary=%u, bwt seq_len=%u, L2[0]=%u, L2[1]=%u, L2[2]=%u, L2[3]=%u, L2[4]=%u\n",b->bwt_size, b->primary, b->seq_len,b->L2[0],b->L2[1],b->L2[2],b->L2[3],b->L2[4]);
 
@@ -143,6 +140,7 @@ bwtl_t *bwtl_seq2bwtl()
 	}
 	return b;
 }
+
 inline uint32_t bwtl_occ(const bwtl_t *bwt, uint32_t k, uint8_t c)
 {
 	uint32_t n, b;
