@@ -107,11 +107,13 @@ void bwa_cal_sa_reg_gap(int tid, bwt_t *const bwt, int n_seqs, bwa_seq_t *seqs, 
 			w = (bwt_width_t*)realloc(w, (max_l + 1) * sizeof(bwt_width_t));
 			memset(w, 0, (max_l + 1) * sizeof(bwt_width_t));
 		}
-		bwt_cal_width(bwt, p->len, p->seq, w);
+		if (opt->max_diff > 0)
+			bwt_cal_width(bwt, p->len, p->seq, w);
 		if (opt->fnr > 0.0) local_opt.max_diff = bwa_cal_maxdiff(p->len, BWA_AVG_ERR, opt->fnr);
 		local_opt.seed_len = opt->seed_len < p->len? opt->seed_len : 0x7fffffff;
 		if (p->len > opt->seed_len)
-			bwt_cal_width(bwt, opt->seed_len, p->seq + (p->len - opt->seed_len), seed_w);
+			if (opt->max_diff > 0)
+				bwt_cal_width(bwt, opt->seed_len, p->seq + (p->len - opt->seed_len), seed_w);
 		// core function
 		for (j = 0; j < p->len; ++j) // we need to complement
 			p->seq[j] = p->seq[j] > 3? 4 : 3 - p->seq[j];
